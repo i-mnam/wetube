@@ -1,22 +1,17 @@
-const express = require("express"); // typeof(express) : function
+//import "core-js";
+
+//const express = require("express"); // typeof(express) : function
+import express from "express";
 const app = express();
 
 const PORT = 4000;
 
-
-function handleListening() {
-    console.log(`Listening on :: http://localhost:${PORT}`);
+const handleListening = () => console.log(`Listening on :: http://localhost:${PORT}`);
+const handleHome = (req, res) => {
+    console.log("console_ Hello Home");
+    res.send("Hello From home");
 }
-
-function handleHome(req, res) {
-    console.log("request:" + req);
-    // GET method는 응답 받기 전까지는 계속 로딩 중이다.
-    res.send("Hello from home");
-}
-
-function handleProfile(req, res) {
-    res.send("You are on my profile.");
-}
+const handleProfile = (req, res) => res.send("You are on my profile.");
 
 // set routes
 app.get("/", handleHome);
