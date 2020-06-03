@@ -1,7 +1,7 @@
-//import "core-js";
-
-//const express = require("express"); // typeof(express) : function
 import express from "express";
+import helmet from "helmet";
+import logger from "morgan";
+
 const app = express();
 
 const PORT = 4000;
@@ -16,11 +16,19 @@ const betweenHome = (req, res, next) => {
     console.log("middleware test.");
     next();
 }
+const stopMiddleware = (req, res, next) => {
+    res.send("nothing happen.");
+    // this connection gonna die.
+}
 
 
-// set routes
-app.use(betweenHome); // 응답하기 전 프로세스 처리를 할 수 있으므로 선언 위치가 중요하다.
-//app.get("/", betweenHome, handleHome);
-app.get("/", handleHome);
+// set all routes
+app.use(helmet());
+app.use(logger("dev"));
+//app.use(betweenHome);
+//app.use(stopMiddleware);
+
+// next() : to call the next middleware.
+app.get("/", betweenHome, stopMiddleware, handleHome); //target route
 app.get("/profile", handleProfile);
 app.listen(PORT, handleListening); //callback 으로 call
