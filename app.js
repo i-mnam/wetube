@@ -18,6 +18,11 @@ app.use(bodyParser.urlencoded({ extended : true }));
 app.use(helmet());
 app.use(logger("dev"));
 
+
+// set application
+app.set("view engine", "pug");
+
+// set intro-router
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
