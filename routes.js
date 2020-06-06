@@ -7,7 +7,7 @@ const SEARCH = "/search";
 
 // Users
 const USERS = "/users";
-const USER_DETAIL = "/:id";
+const USER_DETAIL = "/:id"; // HERE!!!!! //
 const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
 
