@@ -1,5 +1,33 @@
 export const home = (req, res) => res.render("home", {pageTitle: "Home"});
-export const search = (req, res) => res.render("search", {pageTitle: "Search"});
+export const search = (req, res) => {
+    // console.log(req);
+    // ...
+    // },
+    // params: {},
+    // query: { term: 'item3' },
+    // res: ServerResponse { ...
+    // console.log("query::" + req.query.term);
+    // console.log(Object.keys(req.query).length);
+    // query: {term:'t', sth1:'val1', sth2:'val2'}
+
+
+    // const searchingBy = req.query.term;  // beforeES6
+    // {query} = req; // === req.query
+    // const {
+    //     query:{term}
+    // } = req; // === req.query.term
+    // console.log("term:" + term);
+    const {
+        query: {    // query를 사용하려면 GET 방식이여야만 한다?!!
+            term: searchingBy
+        }
+    } = req;
+    
+    res.render("search", {
+        pageTitle: "Search", 
+        searchingBy: searchingBy
+    });
+}
 
 export const videos = (req, res) => res.render("videos", {pageTitle: "Videos"});
 export const upload = (req, res) => res.render("upload", {pageTitle: "Upload"});
