@@ -3,4 +3,5 @@ extends layouts/main
 block content
     //p=pageTitle // 변수의 일반 text 사용시 pug의 방식
     .videos
-        h1 Video Home
+        each item in videos
+            h1= item.title

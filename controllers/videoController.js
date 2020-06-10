@@ -1,4 +1,17 @@
-export const home = (req, res) => res.render("home", {pageTitle: "Home"});
+import {videos} from "../db"
+
+
+export const home = (req, res) => {
+    console.log("videos:" + videos);
+    res.render("home", {
+        pageTitle: "Home",
+        videos: videos
+    });
+    // SyntaxError: /Users/naami/dev/nomadCoder/wetube/controllers/videoController.js: 
+    //Identifier 'videos' has already been declared (42:13)
+
+}
+
 export const search = (req, res) => {
     // console.log(req);
     // ...
@@ -27,9 +40,9 @@ export const search = (req, res) => {
         pageTitle: "Search", 
         searchingBy: searchingBy
     });
-}
+};
 
-export const videos = (req, res) => res.render("videos", {pageTitle: "Videos"});
+//export const videos_name_test = (req, res) => res.render("videos", {pageTitle: "Videos"});
 export const upload = (req, res) => res.render("upload", {pageTitle: "Upload"});
 export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle: "Video Detail"});
 export const editVideo  = (req, res) => res.render("editVideo", {pageTitle: "Edit Video"});
