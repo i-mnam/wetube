@@ -7,7 +7,9 @@ block content
     .videos
         each item in videos
             //h1= item.title
+            // + : include a mixin
             +videoBlock({
                 title: item.title,
-                description: item.description
+                views: item.views,
+                videoFile: item.videoFile
             })
