@@ -40,6 +40,11 @@ export const search = (req, res) => {
         pageTitle: "Search", 
         searchingBy: searchingBy
     });
+    res.render("search", {
+        pageTitle:"Search",
+        searchingBy,
+        videos
+    })
 };
 
 //export const videos_name_test = (req, res) => res.render("videos", {pageTitle: "Videos"});
