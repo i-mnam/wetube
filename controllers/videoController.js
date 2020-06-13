@@ -2,7 +2,6 @@ import {videos} from "../db"
 
 
 export const home = (req, res) => {
-    console.log("videos:" + videos);
     res.render("home", {
         pageTitle: "Home",
         videos: videos

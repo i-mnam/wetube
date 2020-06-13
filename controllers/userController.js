@@ -8,7 +8,7 @@ export const getJoin = (req, res) => {
     });
 };
 export const postJoin = (req, res) => {
-    //const obj = req.body;   // obj.name;
+    //const obj = req.body;   // obj.name;s
     const {
         body: {
             name, 
@@ -49,9 +49,15 @@ export const postJoin = (req, res) => {
     }
 };
 
-export const login = (req, res) => res.render("login", {
+export const getLogin = (req, res) => res.render("login", {
     pageTitle: "Log In"
 });
+
+export const postLogin = (req, res) => {
+    // Todo: check User Info
+    res.redirect(routes.home);
+}
+
 export const logout = (req, res) => res.render("logout", {
     pageTitle: "Log Out"
 });

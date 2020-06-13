@@ -26,15 +26,39 @@ const routes = {
     logout: LOGOUT,
     search: SEARCH,
     users: USERS,
-    userDetail: USER_DETAIL,
+    userDetail: (id) => {
+        if(id) {
+            return `/users/${id}`; // 이 작업하기 전엔 depth개념 있게 라우팅 주소가 잡혔는데, 굳이 하드코딩 사용해서 해야하나?
+        } else {
+            return USER_DETAIL;
+        }
+    },
     editProfile: EDIT_PROFILE,
     changePassword: CHANGE_PASSWORD,
     videos: VIDEOS,
     upload: UPLOAD,
-    videoDetail: VIDEO_DETAIL,
+    videoDetail: (id) => {
+        if(id) {
+            return `/videos/${id}`;
+        } else {
+            return VIDEO_DETAIL;
+        }
+    },
     editVideo: EDIT_VIDEO,
     deleteVideo: DELETE_VIDEO
 };
-
+//userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,
+// old version
+// ...
+// userDetail: function(id) {
+//     if(id) {
+//         console.log("routes.userDetail() 이렇게 호출해줄래.?");
+//         return `/users/${id}`;
+//     } else {
+//         console.log("fail to call routes.userDetail()");
+//         return USER_DETAIL; //왜? id없이 로그인 성공해서 userDetail까지 못올텐데?
+//     }
+// },
+// ...
 
 export default routes;
