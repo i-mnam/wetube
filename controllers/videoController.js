@@ -36,13 +36,13 @@ export const search = (req, res) => {
         }
     } = req;
     
+    // res.render("search", {
+    //     pageTitle: "Search", 
+    //     searchingBy: searchingBy
+    // });
     res.render("search", {
-        pageTitle: "Search", 
-        searchingBy: searchingBy
-    });
-    res.render("search", {
-        pageTitle:"Search",
-        searchingBy,
+        pageTitle:"Search" ,
+        searchingBy ,
         videos
     })
 };
