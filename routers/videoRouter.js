@@ -1,8 +1,9 @@
 import express from "express";
 import routes from "../routes";
 import { 
-//    videos_name_test, 
-    upload, 
+//    videos_name_test, upload
+    getUpload,
+    postUpload, 
     videoDetail, 
     editVideo, 
     deleteVideo 
@@ -13,9 +14,12 @@ const videoRouter = express.Router();
 
 
 //videoRouter.get(routes.home, videos_name_test); // delte) views/videos.pug :: home.pug 에서  videosList를 보여주고 있음.
-videoRouter.get(routes.upload, upload);
+videoRouter.get(routes.upload, getUpload);
+videoRouter.post(routes.upload, postUpload);
+
+videoRouter.get(routes.videoDetail(), videoDetail); // !!! REGEX !!!! // return string 
+
 videoRouter.get(routes.editVideo, editVideo);
 videoRouter.get(routes.deleteVideo, deleteVideo);
-videoRouter.get(routes.videoDetail(), videoDetail); // !!! REGEX !!!!
 
 export default videoRouter;

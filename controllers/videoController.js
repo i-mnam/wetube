@@ -1,3 +1,4 @@
+import routes from "../routes"
 import {videos} from "../db"
 
 
@@ -47,7 +48,31 @@ export const search = (req, res) => {
 };
 
 //export const videos_name_test = (req, res) => res.render("videos", {pageTitle: "Videos"});
-export const upload = (req, res) => res.render("upload", {pageTitle: "Upload"});
-export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle: "Video Detail"});
+export const getUpload = (req, res) => res.render("upload", {pageTitle: "Upload"});
+export const postUpload = (req, res) => {
+    const {
+        body: {
+            file,
+            title,
+            description
+        }
+    } = req;
+    console.log("videoControl: " + description); 
+    // Todo: Upload and Save Video
+    res.redirect(routes.videoDetail(11111));
+};
+export const videoDetail = (req, res) => {
+    // TEST) send parameter from url
+    const {
+        params: {
+            id
+        }
+    } = req;
+    console.log("id: " + id);
+    res.render("videoDetail", {
+        pageTitle: "Video Detail",
+        videoId: id
+    });
+};
 export const editVideo  = (req, res) => res.render("editVideo", {pageTitle: "Edit Video"});
 export const deleteVideo = (req, res) => res.render("deleteVideo", {pageTitle: "Delete Video"});
