@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
-import { addListener } from "nodemon";
+import dotenv from "dotenv";
 
 
+dotenv.config();
 // mongodb connect 할 때, 아래 설명대로 설정요청함.
 mongoose.connect(
-    "mongodb://localhost:27017/wetube", {
+    process.env.MONGO_URL, {
         useNewUrlParser: true,
         useFindAndModify: false
     }
