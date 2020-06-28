@@ -1,5 +1,5 @@
 import routes from "../routes"
-import {videos} from "../db"
+// import {videos} from "../db"
 
 
 export const home = (req, res) => {

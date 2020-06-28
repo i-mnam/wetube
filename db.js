@@ -1,50 +1,19 @@
-export const videos = [
-    {
-        id: 324393,
-        title: "Video awesome",
-        description: "THis is something I love1",
-        views: 24,
-        videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator: {
-            id: 121212,
-            name: "Nicolas",
-            email: "nico@las.com"
-        }
-    },
-    {
-        id: 1212121,
-        title: "Video super",
-        description: "This is something I love2",
-        views: 24,
-        videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator: {
-          id: 121212,
-          name: "Nicolas",
-          email: "nico@las.com"
-        }
-      },
-      {
-        id: 55555,
-        title: "Video nice",
-        description: "This is something I love3",
-        views: 24,
-        videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator: {
-          id: 121212,
-          name: "Nicolas",
-          email: "nico@las.com"
-        }
-      },
-      {
-        id: 11111,
-        title: "Video perfect",
-        description: "This is something I love4",
-        views: 24,
-        videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator: {
-          id: 121212,
-          name: "Nicolas",
-          email: "nico@las.com"
-        }
-      }
-];
+import mongoose from "mongoose";
+import { addListener } from "nodemon";
+
+
+// mongodb connect 할 때, 아래 설명대로 설정요청함.
+mongoose.connect(
+    "mongodb://localhost:27017/wetube", {
+        useNewUrlParser: true,
+        useFindAndModify: false
+    }
+);
+
+const db = mongoose.connection;
+
+const handleOpen = () => console.log("✅ Connected to DB");
+const handleError = () => console.log("❎ Fail to connect to DB")
+
+db.once("open", handleOpen);
+db.on("error", handleError);
