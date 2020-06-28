@@ -117,3 +117,6 @@ dist
 
 # added files
 package-lock.json
+
+# custom added
+*.bck
