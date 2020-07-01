@@ -1,12 +1,39 @@
 import routes from "../routes"
 // import {videos} from "../db"
+import Video from "../models/Video";
 
+export const home = async (req, res) => {
+    // start to looking for videos ///////////////////////////////////
+    // js가 videos를 찾기 시작은 하지만 그 결과 값을 받는 것을 확인하고 다음 코드를 진행하는 것은 아니다. 
+    // javascript는 기다리지 않는다 !!! 살펴 보는 것을 시작하고 다음 작업도 같이 진행한다 !!!!!
+    // 그래서 살펴보는 것을 시작하고 결과 받는 것 까지 확인 한 후에 다음 작업을 진행하고 싶다면 반드시 async 라는 키워드를 사용해야한다.
+    // async : js가 이 function의 어떤 부분은 꼭 끝나는 것을 기다려야 한다고 하는 것이다.
+    // await : 다음 과정이 끝날 때까지 잠시 기달 : 성공여부에 상관없이 끝나기를 기다리는 것.
+    
+    try {
+        const videos = await Video.find({});
+        console.log("it's working??");
+        // throw Error("test error");
+        res.render("home", {
+            pageTitle: "Home",
+            videos: videos
+        });
+    } catch (error) {
+        console.log("[ERROR] " + error);
+        res.render("home", {
+            pageTitle: "Home",
+            videos: []
+        });
+    }
+    // (node:2548) UnhandledPromiseRejectionWarning: MongoError: Invalid database name: 'wetube";'
+    // ...
+    // (node:2548) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (
+    // 결과 적으로 try{}catch{} 안하고 async function 실행하려니 nodejs 에서 error(UnhandledPromiseRejectionWarning) 발생시켜 버리고.. 그래서  mongodb
 
-export const home = (req, res) => {
-    res.render("home", {
-        pageTitle: "Home",
-        videos: videos
-    });
+    // error 를 최선의 방법을 생각해 다뤄야, 잡아야 한다. 
+    // 큰 error는 NodeJS가 망가지지만 작은 err는 안망가지고 catch에서 처리되는 걸로 넘어감
+    
+
     // SyntaxError: /Users/naami/dev/nomadCoder/wetube/controllers/videoController.js: 
     //Identifier 'videos' has already been declared (42:13)
 
