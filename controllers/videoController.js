@@ -76,18 +76,63 @@ export const search = (req, res) => {
 
 //export const videos_name_test = (req, res) => res.render("videos", {pageTitle: "Videos"});
 export const getUpload = (req, res) => res.render("upload", {pageTitle: "Upload"});
-export const postUpload = (req, res) => {
+export const postUpload = async (req, res) => {
+// export const postUpload = (req, res) => {
+    // const {
+    //     body: {
+    //         file,
+    //         title,
+    //         description
+    //     }
+    // } = req;
+    // console.log("videoController postUpload: " + description); 
+    // Todo: Upload and Save Video
+    //res.redirect(routes.videoDetail(11111));
+
+
+    // # 3.6 Uploading and Creating a Video
+    // 중요) Video가 아닌 file은 들어오지 않게 보호 해야한다.  
+    // const {body, file} = req;
+    // console.log(body, file);
+
     const {
         body: {
-            file,
-            title,
-            description
-        }
+            title, description
+        }, 
+        file: { path }
     } = req;
-    console.log("videoControl: " + description); 
-    // Todo: Upload and Save Video
-    res.redirect(routes.videoDetail(11111));
+    console.log("title ))" + title +" \n description))" + description + " \npath))" + path);
+    //temp
+   // res.render("upload", {pageTitle: "Upload"});
+
+    const newVideo = await Video.create({
+        fileUrl: path,
+        title,
+        description
+    });
+    // res.render(routes.videoDetail(newVideo.id));
+    // Error: Failed to lookup view "/videos/5f00a29595667f089242c33e" in views directory "/Users/naami/dev/nomadCoder/wetube/views"
+    // at Function.render
+
+
+    // 1) 올바른 코딩 302) 
+    res.redirect(routes.videoDetail(newVideo.id));
+    // POST /videos/upload 302 50.824 ms - 108
+    // [controller][videoDtail]id: 5f01f853b4ebed078cb76de1 
+    // GET /videos/5f01f853b4ebed078cb76de1 200 60.351 ms - 975
+
+    // 2) 올바르지 않은 코딩 200)
+    // res.render("videoDetail", {
+    //     pageTitle: "[TEST VideoDetail",
+    //     videoId: newVideo.id
+    // });
+    // POST /videos/upload 200 103.390 ms - 980
+    // AND!!
+    // post 200 결과로 화면 변환을 마무리 해버림. >> 화면 변환이 post url로 되어버리면 안 됨!
+    // still remain localhost:4000/videos/upload with Video Detail about 5f01fa3ffbbdf7084e928bc4
+    // It's definitely wrong coding.
 };
+
 export const videoDetail = (req, res) => {
     // TEST) send parameter from url
     const {
@@ -95,7 +140,7 @@ export const videoDetail = (req, res) => {
             id
         }
     } = req;
-    console.log("id: " + id);
+    console.log("[controller][videoDtail]id: " + id);
     res.render("videoDetail", {
         pageTitle: "Video Detail",
         videoId: id

@@ -39,8 +39,10 @@ const routes = {
     upload: UPLOAD,
     videoDetail: (id) => {
         if(id) {
+            console.log("[routes][videoDetail()] HAVE A ID.");
             return `/videos/${id}`;
         } else {
+            console.log("[routes][videoDetail()] NO ID.");
             return VIDEO_DETAIL;
         }
     },

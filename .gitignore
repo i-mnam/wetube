@@ -120,3 +120,6 @@ package-lock.json
 
 # custom added
 *.bck
+
+# Video resource directories
+videos/
