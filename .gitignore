@@ -122,4 +122,5 @@ package-lock.json
 *.bck
 
 # Video resource directories
-videos/
+# videos/
+uploads/

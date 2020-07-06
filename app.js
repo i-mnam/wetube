@@ -18,6 +18,12 @@ app.use(helmet());
 app.set("view engine", "pug");
 
 // set middleware
+app.use("/uploads", express.static("uploads")); 
+// directory에서 file을 보내주는 middleware
+// 이건 좋은 예시가 아님) 서버에 file을 직접적으로 올리는 건 좋지 않음.
+// static file (e.g. css, js, img,,,)을 사용하는 방법에 대해 알아봄.
+// 큰 파일 용량으로 다른 사용을 막아버릴 수도 있음..
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
