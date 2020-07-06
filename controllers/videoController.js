@@ -133,18 +133,27 @@ export const postUpload = async (req, res) => {
     // It's definitely wrong coding.
 };
 
-export const videoDetail = (req, res) => {
+export const videoDetail = async (req, res) => {
     // TEST) send parameter from url
     const {
         params: {
             id
         }
     } = req;
+    // params key가 왜 id 인가?!! routes.js 에서 그렇게 정의하였기 때문이다.
     console.log("[controller][videoDtail]id: " + id);
-    res.render("videoDetail", {
-        pageTitle: "Video Detail",
-        videoId: id
-    });
+
+    try {
+        const video = await Video.findById(id);
+        res.render("videoDetail", {
+            pageTitle: "Video Detail",
+            video
+        });
+    } catch (error) {
+        // console.log(error);
+        res.redirect(routes.home);
+    }
+
 };
 export const editVideo  = (req, res) => res.render("editVideo", {pageTitle: "Edit Video"});
 export const deleteVideo = (req, res) => res.render("deleteVideo", {pageTitle: "Delete Video"});
