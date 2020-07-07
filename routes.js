@@ -39,14 +39,28 @@ const routes = {
     upload: UPLOAD,
     videoDetail: (id) => {
         if(id) {
-            console.log("[routes][videoDetail()] HAVE A ID.");
+            //console.log("[routes][videoDetail()] HAVE A ID.");
             return `/videos/${id}`;
         } else {
+            console.log("ㅇㅕ기 올 수 있나????????");
             console.log("[routes][videoDetail()] NO ID.");
             return VIDEO_DETAIL;
         }
     },
-    editVideo: EDIT_VIDEO,
+    // editVideo: function () {
+    //     console.log("**** edit video ROUTE");
+    //     return EDIT_VIDEO;
+        
+    // },
+    editVideo: (id) => {
+        if(id) {
+            return `/videos/${id}/edit`;
+        } else {
+            console.log("ㅇㅕ기 올 수 있나????222222222");
+            console.log("[routes][editVideo()] NO ID.");
+            return EDIT_VIDEO;
+        }
+    },
     deleteVideo: DELETE_VIDEO
 };
 //userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,

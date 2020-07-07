@@ -155,5 +155,56 @@ export const videoDetail = async (req, res) => {
     }
 
 };
-export const editVideo  = (req, res) => res.render("editVideo", {pageTitle: "Edit Video"});
+export const getEditVideo  = async (req, res) => {
+    const {
+        params: { id }
+    } = req;
+
+    try {
+        const video = await Video.findById(id);
+        res.render("editVideo", {
+            pageTitle: `Edit ${video.title}`,
+            video
+        });
+    } catch(error) {
+        res.redirect(routes.home);
+    }
+};
+
+export const postEditVideo = async (req, res) => {
+    const {
+        params: { id },
+        body: { title, description }
+    } = req;
+    console.log("NEW:::" + title, description+"//" + id);
+    try {
+        const test = await Video.findOneAndUpdate(
+                {"_id": id}, 
+                {title, description},
+                {new: true},
+                (err, doc) => {// callback
+                    if (err) {
+                        console.log("Something wrong when updating data!");
+                    }
+                
+                    console.log("success??? result(doc):" + doc);
+                }
+            ).exec();
+
+        // const test = await Video.findOne({"_id":id});
+        res.redirect(routes.videoDetail(id));
+    } catch (error) {
+        console.log("[findOneAndUpdate Error]" + error);
+        res.redirect(routes.home);
+    }
+
+
+    // Cat.findOneAndUpdate({age: 17}, {$set:{name:"Naomi"}}, {new: true}, (err, doc) => {
+    //     if (err) {
+    //         console.log("Something wrong when updating data!");
+    //     }
+    
+    //     console.log(doc);
+    // });
+};
 export const deleteVideo = (req, res) => res.render("deleteVideo", {pageTitle: "Delete Video"});

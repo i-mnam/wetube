@@ -7,7 +7,8 @@ import {
     getUpload,
     postUpload, 
     videoDetail, 
-    editVideo, 
+    getEditVideo,
+    postEditVideo, 
     deleteVideo 
 } from "../controllers/videoController";
 
@@ -19,9 +20,12 @@ const videoRouter = express.Router();
 videoRouter.get(routes.upload, getUpload);
 videoRouter.post(routes.upload, uploadVideo, postUpload);
 
-videoRouter.get(routes.videoDetail(), videoDetail); // !!! REGEX !!!! // return string 
+videoRouter.get(routes.videoDetail(), videoDetail); // !!! REGEX !!!! // return string // 그냥 조회만 하니까 GET만 있다?
 
-videoRouter.get(routes.editVideo, editVideo);
+//videoRouter.get(routes.editVideo, editVideo);
+videoRouter.get(routes.editVideo(), getEditVideo);
+videoRouter.post(routes.editVideo(), postEditVideo);
+
 videoRouter.get(routes.deleteVideo, deleteVideo);
 
 export default videoRouter;
