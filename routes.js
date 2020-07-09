@@ -61,7 +61,14 @@ const routes = {
             return EDIT_VIDEO;
         }
     },
-    deleteVideo: DELETE_VIDEO
+    deleteVideo: (id) => {
+        if (id) {
+            return `/videos/${id}/delete`;
+        } else {
+            return DELETE_VIDEO;
+        }
+    }
+
 };
 //userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,
 // old version

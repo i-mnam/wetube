@@ -9,7 +9,7 @@ import {
     videoDetail, 
     getEditVideo,
     postEditVideo, 
-    deleteVideo 
+    getDeleteVideo 
 } from "../controllers/videoController";
 
 
@@ -26,6 +26,6 @@ videoRouter.get(routes.videoDetail(), videoDetail); // !!! REGEX !!!! // return 
 videoRouter.get(routes.editVideo(), getEditVideo);
 videoRouter.post(routes.editVideo(), postEditVideo);
 
-videoRouter.get(routes.deleteVideo, deleteVideo);
+videoRouter.get(routes.deleteVideo(), getDeleteVideo); // 현재 구조로는 post로 할 수가 없음 
 
 export default videoRouter;
