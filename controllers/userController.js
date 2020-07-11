@@ -11,7 +11,7 @@ export const postJoin = (req, res) => {
     //const obj = req.body;   // obj.name;s
     const {
         body: {
-            name, 
+            name,
             email,
             password,
             password2
@@ -34,7 +34,7 @@ export const postJoin = (req, res) => {
     // } = req;
     // console.log("ES6_TEST variable test: " + tE2 + "// " + tP2);
 
-    if(password !== password2) {
+    if (password !== password2) {
         res.status(400);
         res.render("join", {
             pageTitle: "Incorrect Join"
@@ -65,7 +65,7 @@ export const logout = (req, res) => {
 
 // export const users = (req, res) => res.render("users");
 
-export const editProfile = (req, res) =>  res.render("editProfile", {
+export const editProfile = (req, res) => res.render("editProfile", {
     pageTitle: "Edit Profile"
 });
 export const changePassword = (req, res) => {
