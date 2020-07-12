@@ -1,16 +1,79 @@
 extends layouts/main
 include mixins/videoBlock
 
-
 block content
-    //p=pageTitle // 변수의 일반 text 사용시 pug의 방식
-    .videos
+    .home-videos
         each item in videos
-            //h1= item.title
-            // + : include a mixin
+            
             +videoBlock({
-                id: item.id,
-                title: item.title,
-                views: item.views,
-                videoFile: item.fileUrl
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
+            })
+            +videoBlock({
+                id:item.id,
+                title:item.title,
+                views:item.views,
+                videoFile:item.fileUrl
             })

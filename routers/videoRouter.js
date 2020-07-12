@@ -1,20 +1,17 @@
 import express from "express";
 import routes from "../routes";
-import { uploadVideo } from "../middlewares"
+import { uploadVideo } from "../middlewares";
 
-import { 
-//    videos_name_test, upload
+import {
     getUpload,
-    postUpload, 
-    videoDetail, 
+    postUpload,
+    videoDetail,
     getEditVideo,
-    postEditVideo, 
-    getDeleteVideo 
+    postEditVideo,
+    getDeleteVideo,
 } from "../controllers/videoController";
 
-
 const videoRouter = express.Router();
-
 
 //videoRouter.get(routes.home, videos_name_test); // delte) views/videos.pug :: home.pug 에서  videosList를 보여주고 있음.
 videoRouter.get(routes.upload, getUpload);
@@ -26,6 +23,6 @@ videoRouter.get(routes.videoDetail(), videoDetail); // !!! REGEX !!!! // return 
 videoRouter.get(routes.editVideo(), getEditVideo);
 videoRouter.post(routes.editVideo(), postEditVideo);
 
-videoRouter.get(routes.deleteVideo(), getDeleteVideo); // 현재 구조로는 post로 할 수가 없음 
+videoRouter.get(routes.deleteVideo(), getDeleteVideo); // 현재 구조로는 post로 할 수가 없음
 
 export default videoRouter;
