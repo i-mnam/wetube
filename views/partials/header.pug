@@ -15,11 +15,8 @@ header.header
                         a(href=routes.login) Log In
                 else 
                     li 
-                        // TEST) >> REAL)
-                        //a(href=routes.upload) Upload // no depth concept
                         a(href=`/videos${routes.upload}`) Upload
                     li
-                        // a(href=routes.userDetail) Profile
                         a(href=routes.userDetail(user.id)) Profile
                     li 
                         a(href=routes.logout) Log Out
