@@ -1,3 +1,4 @@
+import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 
@@ -8,7 +9,8 @@ export const getJoin = (req, res) => {
         pageTitle: "Join",
     });
 };
-export const postJoin = async (req, res) => {
+// next 인자를 더 사용함으로써 미들웨어화 되었다..?!
+export const postJoin = async (req, res, next) => {
     //const obj = req.body;   // obj.name;s
     const {
         body: { name, email, password, password2 },
@@ -42,7 +44,7 @@ export const postJoin = async (req, res) => {
         // res.render("join", {
         //     pageTitle: "Correct Join"
         // });
-        console.log("jfs;ldkfjasl;f//" + name, email, password);
+        console.log("[userController][postJoin]: " + name, email, password);
         try {
             const user = await User({
                 name,
@@ -50,11 +52,14 @@ export const postJoin = async (req, res) => {
             });
             // passport 설정내용이 없어도 작동이 매우 잘되었음..
             await User.register(user, password);
+            // !!!!!!!!!!!!!
+            next();
         } catch (error) {
             console.log(error);
+            res.redirect(routes.home);
         }
         // Todo: Log user in
-        res.redirect(routes.home);
+        // res.redirect(routes.home);
     }
 };
 
@@ -63,10 +68,15 @@ export const getLogin = (req, res) =>
         pageTitle: "Log In",
     });
 
-export const postLogin = (req, res) => {
-    // Todo: check User Info
-    res.redirect(routes.home);
-};
+// export const postLogin = (req, res) => {
+//     // Todo: check User Info
+//     res.redirect(routes.home);
+// };
+export const postLogin = passport.authenticate("local", {
+    successRedirect: routes.home,
+    failureRedirect: routes.login,
+    failureFlash: true,
+});
 
 export const logout = (req, res) => {
     // Todo: Process Log Out

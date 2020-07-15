@@ -3,12 +3,18 @@ import helmet from "helmet";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import passport from "passport";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import routes from "./routes";
 
 import { localsMiddleware } from "./middlewares";
+
+import "./passport";
+
+// why..
+import session from "express-session";
 
 const app = express();
 
@@ -29,8 +35,14 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
-app.use(localsMiddleware);
+app.use(session({ secret: "so cut babies" }));
+//[middlewares] req.user:undefined
+//[middlewares] req.user:{ _id: 5f0f4428feffc711c332c03b, name: 't', email: 't@t.com', __v: 0 }
+app.use(passport.initialize());
+app.use(passport.session());
+//a
 
+app.use(localsMiddleware);
 // 복습) use custom middleware
 // app.use(function(req, res, next) {});
 // app.use((req, res, next) => {});
