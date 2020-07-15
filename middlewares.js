@@ -13,8 +13,8 @@ export const localsMiddleware = (req, res, next) => {
     //     isAuthenticated: false,
     //     id: 1,
     // };
-    console.log("[middlewares] req.user:" + req.user);
-    res.locals.user = req.user || {}; // 대박.!!!!!!!!!!!!!!!!!!!!!
+    console.log("[middlewares] req.user: " + req.user);
+    res.locals.user = req.user || null; // 대박.!!!!!!!!!!!!!!!!!!!!!
     next(); // 주의) middleware는 next()를 호출해야 req를 전달 할 수 있음
 };
 export const uploadVideo = multerVideo.single("videoFile");

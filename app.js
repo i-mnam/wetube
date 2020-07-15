@@ -35,7 +35,13 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
-app.use(session({ secret: "so cut babies" }));
+app.use(
+    session({
+        secret: process.env.COOKIE_SECRET,
+        resave: true,
+        saveUninitialized: false,
+    })
+);
 //[middlewares] req.user:undefined
 //[middlewares] req.user:{ _id: 5f0f4428feffc711c332c03b, name: 't', email: 't@t.com', __v: 0 }
 app.use(passport.initialize());
