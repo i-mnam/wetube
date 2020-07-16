@@ -1,6 +1,8 @@
 import express from "express";
 import helmet from "helmet";
+import mongoose from "mongoose";
 import logger from "morgan";
+import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passport from "passport";
@@ -17,6 +19,8 @@ import "./passport";
 import session from "express-session";
 
 const app = express();
+
+const CookieStore = MongoStore(session);
 
 // 주의) setting order
 app.use(helmet());
@@ -40,6 +44,9 @@ app.use(
         secret: process.env.COOKIE_SECRET,
         resave: true,
         saveUninitialized: false,
+        store: new CookieStore({
+            mongooseConnection: mongoose.connection,
+        }),
     })
 );
 //[middlewares] req.user:undefined
