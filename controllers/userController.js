@@ -1,6 +1,7 @@
 import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
+import { urlencoded } from "body-parser";
 
 //export const join = (req, res) => res.render("join");
 export const getJoin = (req, res) => {
@@ -84,11 +85,34 @@ export const githubLoginCallbackTest = passport.authenticate("github", {
 });
 
 export const postGithubLogin = (req, res) => {
-    res.send(routes.home);
+    res.redirect(routes.home);
 };
 
-export const githubLoginCallback = (accessToken, refreshToken, profile, cb) => {
-    console.log(accessToken, refreshToken, profile, cb);
+export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => {
+    // console.log(accessToken, refreshToken, profile, cb);
+    const {
+        _json: { id, avatar_url, name, email },
+    } = profile;
+
+    try {
+        const user = await User.findOne({ email });
+        if (user) {
+            // console.log(user);
+            user.githubId = id;
+            user.save();
+            return cb(null, user); // if success : don't need err.
+        }
+
+        const newUser = await User.create({
+            email,
+            name,
+            githubId: id,
+            avatarUrl: avatar_url,
+        });
+        return cb(null, newUser);
+    } catch (error) {
+        return cb(error);
+    }
 };
 
 export const logout = (req, res) => {
