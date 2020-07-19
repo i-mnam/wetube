@@ -20,9 +20,11 @@
     .social-login--github {
       background-color: $black;
       color: white;
-      .fa-github {
-        span {
-          font-family: sans-serif;
+      a {
+        .fa-github {
+          span {
+            font-family: sans-serif;
+          }
         }
       }
     }

@@ -8,10 +8,13 @@ import {
     getLogin,
     postLogin,
     logout,
+    githubLogin,
+    githubLoginCallbackTest,
+    postGithubLogin,
 } from "../controllers/userController";
 
 // import passport from "passport";
-import { onlyPublic } from "../middlewares";
+import { onlyPublic, onlyPrivate } from "../middlewares";
 
 const globalRouter = express.Router();
 
@@ -53,6 +56,12 @@ globalRouter.get(routes.home, home);
 globalRouter.get(routes.search, search);
 //globalRouter.get(routes.join, join);
 //globalRouter.get(routes.login, login);
-globalRouter.get(routes.logout, onlyPublic, logout);
+globalRouter.get(routes.logout, onlyPrivate, logout);
 
+globalRouter.get(routes.github, githubLogin);
+globalRouter.get(
+    routes.githubCallback,
+    githubLoginCallbackTest,
+    postGithubLogin
+);
 export default globalRouter;

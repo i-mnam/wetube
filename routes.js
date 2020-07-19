@@ -18,6 +18,10 @@ const UPLOAD = "/upload";
 const EDIT_VIDEO = "/:id/edit";
 const DELETE_VIDEO = "/:id/delete";
 
+// Github
+const GITHUB = "/auth/github";
+const GITHUB_CALLBACK = "/auth/github/callback";
+
 // routes
 const routes = {
     home: HOME,
@@ -65,6 +69,9 @@ const routes = {
             return DELETE_VIDEO;
         }
     },
+
+    github: GITHUB,
+    githubCallback: GITHUB_CALLBACK,
 };
 //userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,
 // old version
