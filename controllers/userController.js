@@ -137,3 +137,10 @@ export const userDetail = (req, res) => {
         pageTitle: "User Detail",
     });
 };
+
+export const getMe = (req, res) => {
+    res.render("userDetail", {
+        pageTitle: "User Detail",
+        user: req.user,
+    });
+};

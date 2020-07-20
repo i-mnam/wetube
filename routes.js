@@ -10,6 +10,7 @@ const USERS = "/users";
 const USER_DETAIL = "/:id"; // HERE!!!!! //
 const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
+const ME = "/me";
 
 // Videos
 const VIDEOS = "/videos";
@@ -72,6 +73,7 @@ const routes = {
 
     github: GITHUB,
     githubCallback: GITHUB_CALLBACK,
+    me: ME,
 };
 //userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,
 // old version

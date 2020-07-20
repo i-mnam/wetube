@@ -11,6 +11,7 @@ import {
     githubLogin,
     githubLoginCallbackTest,
     postGithubLogin,
+    getMe,
 } from "../controllers/userController";
 
 // import passport from "passport";
@@ -64,4 +65,5 @@ globalRouter.get(
     githubLoginCallbackTest,
     postGithubLogin
 );
+globalRouter.get(routes.me, getMe);
 export default globalRouter;
