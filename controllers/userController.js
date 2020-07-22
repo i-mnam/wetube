@@ -2,6 +2,8 @@ import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 import { urlencoded } from "body-parser";
+import { Mongoose } from "mongoose";
+import { mongodb } from "mongodb";
 
 //export const join = (req, res) => res.render("join");
 export const getJoin = (req, res) => {
@@ -56,7 +58,7 @@ export const postJoin = async (req, res, next) => {
             // !!!!!!!!!!!!!
             next();
         } catch (error) {
-            console.log(error);
+            console.log("???" + error);
             res.redirect(routes.home);
         }
         // Todo: Log user in
@@ -90,22 +92,36 @@ export const postGithubLogin = (req, res) => {
 
 export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => {
     // console.log(accessToken, refreshToken, profile, cb);
+    // console.log("[profile]:" + JSON.stringify(profile));
     const {
-        _json: { id, avatar_url, name, email },
+        _json: { id, avatar_url, name, email, login },
     } = profile;
 
     try {
-        const user = await User.findOne({ email });
+        let user = undefined;
+
+        if (null === email) {
+            user = await User.findOne({ githubId: id });
+        } else {
+            user = await User.findOne({ email });
+        }
+
+        //const user = await User.findOne({ email });
         if (user) {
-            // console.log(user);
+            console.log("finded!!" + user);
             user.githubId = id;
             user.save();
             return cb(null, user); // if success : don't need err.
         }
+        let tempName = name;
+        console.log("name:" + name);
+        if (null === name) {
+            tempName = login;
+        }
 
         const newUser = await User.create({
             email,
-            name,
+            name: tempName,
             githubId: id,
             avatarUrl: avatar_url,
         });
@@ -132,10 +148,24 @@ export const changePassword = (req, res) => {
         pageTitle: "Change Password",
     });
 };
-export const userDetail = (req, res) => {
-    res.render("userDetail", {
-        pageTitle: "User Detail",
-    });
+export const userDetail = async (req, res) => {
+    let {
+        params: { id },
+    } = req;
+    console.log("before id:" + id);
+    //console.log("test.." + Mongoose.Schema.ObjectId(id));
+    try {
+        const user = await User.findOne({ _id: id });
+        res.render("userDetail", {
+            pageTitle: "User Detail (not me-version.)",
+            user,
+        });
+    } catch (error) {
+        console.log("???" + error);
+        //???CastError: Cast to ObjectId failed for value "dfsf" at path "_id" for model "User"
+        //(node:5516) UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+        res.redirect(routes.home);
+    }
 };
 
 export const getMe = (req, res) => {
