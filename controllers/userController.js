@@ -174,3 +174,23 @@ export const getMe = (req, res) => {
         user: req.user,
     });
 };
+
+export const facebookLogin = passport.authenticate("facebook");
+
+export const facebookLoginCallback = (
+    accessToken,
+    refreshToken,
+    profile,
+    cb
+) => {
+    console.log(
+        "[facebookLoginCallback]" + accessToken,
+        refreshToken,
+        profile,
+        cb
+    );
+};
+
+export const postFacebookLogin = (req, res) => {
+    res.redirect(routes.home);
+};

@@ -12,10 +12,13 @@ import {
     githubLoginCallbackTest,
     postGithubLogin,
     getMe,
+    facebookLogin,
+    postFacebookLogin,
 } from "../controllers/userController";
 
 // import passport from "passport";
 import { onlyPublic, onlyPrivate } from "../middlewares";
+import passport from "passport";
 
 const globalRouter = express.Router();
 
@@ -66,4 +69,10 @@ globalRouter.get(
     postGithubLogin
 );
 globalRouter.get(routes.me, getMe);
+globalRouter.get(routes.facebook, facebookLogin);
+globalRouter.get(
+    routes.facebookCallback,
+    passport.authenticate("facebook", { failureRedirect: "/login" }),
+    postFacebookLogin
+);
 export default globalRouter;
