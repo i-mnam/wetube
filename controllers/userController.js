@@ -175,7 +175,9 @@ export const getMe = (req, res) => {
     });
 };
 
-export const facebookLogin = passport.authenticate("facebook");
+export const facebookLogin = passport.authenticate("facebook", {
+    scope: ["public_profile", "email"],
+});
 
 export const facebookLoginCallback = (
     accessToken,

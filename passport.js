@@ -40,6 +40,8 @@ passport.use(
             clientID: process.env.FACEBOOK_ID,
             clientSecret: process.env.FACEBOOK_SECRET,
             callbackURL: `http://localhost:4000${routes.facebookCallback}`,
+            passReqToCallback: true,
+            profileFields: ["id", "displayName", "photos", "email"],
         },
         facebookLoginCallback
     )
