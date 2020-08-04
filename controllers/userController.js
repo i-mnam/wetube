@@ -90,7 +90,7 @@ export const postGithubLogin = (req, res) => {
     res.redirect(routes.home);
 };
 
-export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => {
+export const githubLoginCallback = async (req, accessToken, refreshToken, profile, cb) => {
     // console.log(accessToken, refreshToken, profile, cb);
     // console.log("[profile]:" + JSON.stringify(profile));
     const {
@@ -99,7 +99,7 @@ export const githubLoginCallback = async (accessToken, refreshToken, profile, cb
 
     try {
         let user = undefined;
-
+        console.log("email:" + email);
         if (null === email) {
             user = await User.findOne({ githubId: id });
         } else {
@@ -176,21 +176,75 @@ export const getMe = (req, res) => {
 };
 
 export const facebookLogin = passport.authenticate("facebook", {
-    scope: ["public_profile", "email"],
+    scope: ["email"], //"public_profile",
 });
 
-export const facebookLoginCallback = (
+export const facebookLoginCallbackTest = (
+    req,
     accessToken,
     refreshToken,
     profile,
     cb
 ) => {
+    console.log(req);
     console.log(
         "[facebookLoginCallback]" + accessToken,
         refreshToken,
         profile,
         cb
     );
+    console.log("--------------------------");
+    console.log(profile._json); // undefined at profile._json... why...
+};
+
+export const facebookLoginCallback = async (req, accessToken, refreshToken, profile, cb) => {
+    const {
+        _json: { id, name, picture, email },
+    } = profile;
+    // const id = cb._json.id;
+    // const name = cb._json.name;
+    // const picture = cb._json.picture;
+    // const email = cb._json.email;
+    console.log(cb);
+    console.log("id:" + id);
+    console.log("I can't understand about profile..:" + JSON.stringify(profile));
+
+    try {
+        let user = undefined;
+
+        if (null === email) {
+            console.log(
+                " fb는 정책과 passport사용상 email못가지고 오는 경우는  없겠지.?!"
+            );
+            // user = await User.findOne({ facebookId: id });
+        } else {
+            user = await User.findOne({ email });
+            // await가 없으니 Object object로 나온다.. 헐 !!
+            console.dir("user?" + user);
+            if (user) {
+                if (
+                    user.facebookId !== id ||
+                    user.avatarUrl !== picture.data.url
+                ) {
+                    user.facebookId = id;
+                    user.avatarUrl = picture.data.url;
+                    user.save();
+                }
+                return cb(null, user);
+            }
+        }
+
+        const newUser = await User.create({
+            email,
+            name,
+            facebookId: id,
+            avatarUrl: picture.data.url,
+        });
+
+        return cb(null, newUser);
+    } catch (error) {
+        return cb(error);
+    }
 };
 
 export const postFacebookLogin = (req, res) => {
