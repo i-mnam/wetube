@@ -139,7 +139,7 @@ export const logout = (req, res) => {
 
 // export const users = (req, res) => res.render("users");
 
-export const editProfile = (req, res) =>
+export const getEditprofile = (req, res) =>
     res.render("editProfile", {
         pageTitle: "Edit Profile",
     });
