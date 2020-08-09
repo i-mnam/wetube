@@ -54,6 +54,7 @@ export const postJoin = async (req, res, next) => {
                 email,
             });
             // passport 설정내용이 없어도 작동이 매우 잘되었음..
+            // const idStr = user._id;
             await User.register(user, password);
             // !!!!!!!!!!!!!
             next();
@@ -139,10 +140,35 @@ export const logout = (req, res) => {
 
 // export const users = (req, res) => res.render("users");
 
-export const getEditprofile = (req, res) =>
+export const getEditProfile = (req, res) => {
     res.render("editProfile", {
         pageTitle: "Edit Profile",
     });
+};
+export const postEditProfile = async (req, res) => {
+    const {
+        body: { name, email },
+        file,
+    } = req;
+    console.log(req.user);
+    console.log("name, email:" + name + "//" + email + "//" + req.user._id);
+    console.log("file:" + file + "///" + file.path);
+    try {
+        await User.findByIdAndUpdate({ _id: req.user._id }, {
+            name,
+            email,
+            avatarUrl: file ? file.path : req.user.avatarUrl,
+        });
+
+        console.log("============:" + req.user.name);
+        console.log("============:" + req.user.email);
+        res.redirect(routes.me);
+    } catch (error) {
+        res.render("editProfile", {
+            pageTitle: "Edit Profile",
+        });
+    }
+};
 export const changePassword = (req, res) => {
     res.render("changePassword", {
         pageTitle: "Change Password",
@@ -168,11 +194,30 @@ export const userDetail = async (req, res) => {
     }
 };
 
-export const getMe = (req, res) => {
-    res.render("userDetail", {
-        pageTitle: "User Detail",
-        user: req.user,
-    });
+export const getMe = async (req, res) => {
+    try {
+        // const user = await User.findOne({ _id: req.user._id });
+        //최고의 난위도 이슈.. How do you turn a Mongoose document into a plain object?
+        // mongoose doc은 변경이 불가하였던 애였다..
+        // object vs string
+        let user = await (await User.findById({ _id: req.user._id })).toObject();
+
+        if (typeof (user._id) === "object") {
+            console.log("[getMe][result DB]: " + user._id + "//" + typeof (user._id));
+            user._id = user._id.toString();
+            console.log("[getMe][result DB][change]: " + typeof (user._id));
+        }
+
+        res.render("userDetail", {
+            pageTitle: "User Detail",
+            user: user,
+        });
+    } catch (error) {
+        console.log("???getme" + error);
+        //???CastError: Cast to ObjectId failed for value "dfsf" at path "_id" for model "User"
+        //(node:5516) UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+        res.redirect(routes.editProfile);
+    }
 };
 
 export const facebookLogin = passport.authenticate("facebook", {
@@ -222,12 +267,11 @@ export const facebookLoginCallback = async (req, accessToken, refreshToken, prof
             // await가 없으니 Object object로 나온다.. 헐 !!
             console.dir("user?" + user);
             if (user) {
-                if (
-                    user.facebookId !== id ||
-                    user.avatarUrl !== picture.data.url
-                ) {
+                if (user.facebookId !== id) {
                     user.facebookId = id;
-                    user.avatarUrl = picture.data.url;
+                    if (user.avatarUrl === undefined) {
+                        user.avatarUrl = picture.data.url;
+                    }
                     user.save();
                 }
                 return cb(null, user);

@@ -4,14 +4,16 @@ import {
     //    users,
     userDetail,
     getEditProfile,
+    postEditProfile,
     changePassword,
 } from "../controllers/userController";
-import { onlyPrivate } from "../middlewares";
+import { onlyPrivate, uploadAvatar } from "../middlewares";
 
 const userRouter = express.Router();
 
 // userRouter.get(routes.home, users);  //// HERE!!!!!!  //delete
-userRouter.get(routes.getEditProfile, onlyPrivate, getEditProfile);
+userRouter.get(routes.editProfile, onlyPrivate, getEditProfile);
+userRouter.post(routes.editProfile, onlyPrivate, uploadAvatar, postEditProfile);
 userRouter.get(routes.changePassword, onlyPrivate, changePassword);
 userRouter.get(routes.userDetail(), userDetail); // routes.userDetail() 함수로 호출??
 //userRouter.get(routes.userDetail, userDetail);
