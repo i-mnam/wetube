@@ -80,6 +80,9 @@ const routes = {
     me: ME,
     facebook: FACEBOOK,
     facebookCallback: FACEBOOK_CALLBACK,
+
+    PORT: 4000,
+    DOMAIN: "http://localhost",
 };
 //userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,
 // old version
@@ -94,5 +97,4 @@ const routes = {
 //     }
 // },
 // ...
-
 export default routes;

@@ -212,8 +212,10 @@ export const userDetail = async (req, res) => {
     } = req;
     console.log("before id:" + id);
     //console.log("test.." + Mongoose.Schema.ObjectId(id));
+
     try {
         const user = await User.findOne({ _id: id });
+
         res.render("userDetail", {
             pageTitle: "User Detail (not me-version.)",
             user,
@@ -240,6 +242,7 @@ export const getMe = async (req, res) => {
             console.log("[getMe][result DB][change]: " + typeof (user._id));
         }
 
+        console.log("avatar url:" + user.avatarUrl);
         res.render("userDetail", {
             pageTitle: "User Detail",
             user: user,

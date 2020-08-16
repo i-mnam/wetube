@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 
 const UserSchema = new mongoose.Schema({
@@ -7,6 +7,18 @@ const UserSchema = new mongoose.Schema({
     avatarUrl: String,
     facebookId: Number,
     githubId: Number,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ],
+    videos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Video"
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose, { usernameField: "email" });

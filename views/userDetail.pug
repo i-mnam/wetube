@@ -3,11 +3,16 @@ extends layouts/main
 block content
     .user-profile
         .user-profile__header
-            img.u-avatar(src=user.avatarUrl)
-            h4.profile__username=user.name
-        if user.id === loggedUser.id
+            img.u-avatar(src=`${routes.DOMAIN}:${routes.PORT}/${user.avatarUrl}`)
+            h4.profile__username=(user.name +"/"+ user.id +"/" + ((loggedUser)? loggedUser._id :"no loggedUser.."))
+        if ((user.id)?user.id:user._id) === ((loggedUser) ? loggedUser._id : "")
             .user-profile__btns
                 a(href=`/users${routes.editProfile}`)
                     button ✏️ Edit Profile
                 a(href=`/users${routes.changePassword}`)
                     button 🔒 Change Password
+//- Request URL: http://localhost:4000/uploads/avatars/e965865ed414d256a4676ddfffce8b82
+//- Request Method: GET
+//- Status Code: 304 Not Modified
+//- Remote Address: [::1]:4000
+//- Referrer Policy: no-referrer-when-downgrade

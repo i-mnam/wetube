@@ -24,6 +24,10 @@ const VideoSchema = new mongoose.Schema({
             ref: "Comment",
         },
     ],
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 });
 // Using Foriegn key
 const model = mongoose.model("Video", VideoSchema);

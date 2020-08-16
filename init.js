@@ -7,7 +7,8 @@ import "./models/Comment";
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
+const DOMAIN = "http://localhost"; // FAIL
 const handleListening = () =>
-    console.log(`✅ Listening on: http://localhost:${PORT}`);
+    console.log(`✅ Listening on: ${DOMAIN}:${PORT}`);
 
 app.listen(PORT, handleListening);

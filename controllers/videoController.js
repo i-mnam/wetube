@@ -1,5 +1,6 @@
 import routes from "../routes";
 // import {videos} from "../db"
+import User from "../models/User";
 import Video from "../models/Video";
 
 export const home = async (req, res) => {
@@ -88,17 +89,27 @@ export const postUpload = async (req, res) => {
   );
   //temp
   // res.render("upload", {pageTitle: "Upload"});
+  const user = await User.findById({ _id: req.user._id });
+  // Could you tell me why I need to create a new instance, please.:
+  // Because the save method is an instance method. You call it on the instance you want to save, not the User type in general.
+
 
   const newVideo = await Video.create({
     fileUrl: path,
     title,
     description,
+    creator: user._id
   });
+
+
+  user.videos.push(newVideo._id);
+  user.save();
+
   // res.render(routes.videoDetail(newVideo.id));
   // Error: Failed to lookup view "/videos/5f00a29595667f089242c33e" in views directory "/Users/naami/dev/nomadCoder/wetube/views"
   // at Function.render
   // 1) 올바른 코딩 302)
-  res.redirect(routes.videoDetail(newVideo.id));
+  res.redirect(routes.videoDetail(newVideo._id));
   // POST /videos/upload 302 50.824 ms - 108
   // [controller][videoDtail]id: 5f01f853b4ebed078cb76de1
   // GET /videos/5f01f853b4ebed078cb76de1 200 60.351 ms - 975
@@ -124,11 +135,14 @@ export const videoDetail = async (req, res) => {
   console.log("[controller][videoDtail]id: " + id);
 
   try {
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("creator");
+    console.log("[videoDetail] video:" + video);
+    const test = video.creator;
+    console.log("creator:" + video.creator.name);
     res.render("videoDetail", {
       pageTitle: video.title,
       video,
-    });
+    });//http://localhost:4000/users/5f2fd9e754a44a0dbe6ed070
   } catch (error) {
     // console.log(error);
     res.redirect(routes.home);
