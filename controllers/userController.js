@@ -141,6 +141,7 @@ export const logout = (req, res) => {
 // export const users = (req, res) => res.render("users");
 
 export const getEditProfile = (req, res) => {
+    console.log("getEditPrfile: name:" + req.user.name);
     res.render("editProfile", {
         pageTitle: "Edit Profile",
     });
@@ -150,29 +151,60 @@ export const postEditProfile = async (req, res) => {
         body: { name, email },
         file,
     } = req;
-    console.log(req.user);
+    console.log(req.user); // 이전 데이터 ㄸㄸㄸㄸㄸ
     console.log("name, email:" + name + "//" + email + "//" + req.user._id);
-    console.log("file:" + file + "///" + file.path);
+    console.log("file:" + file + "///" + ((file) ? file.path : 'path none.'));
+    let user = null;
     try {
-        await User.findByIdAndUpdate({ _id: req.user._id }, {
+        user = await User.findByIdAndUpdate({ _id: req.user._id }, {
             name,
             email,
-            avatarUrl: file ? file.path : req.user.avatarUrl,
+            avatarUrl: (file) ? file.path : req.user.avatarUrl,
         });
 
-        console.log("============:" + req.user.name);
-        console.log("============:" + req.user.email);
+        console.log("============이전:" + req.user.name); // 이전데이터 ㄷ ㄷ ㄷ ㄷ
+        console.log("============이후:" + user.name);
+
+        // res.render(rouets.me, {
+        //     user: user
+        // });
         res.redirect(routes.me);
     } catch (error) {
-        res.render("editProfile", {
-            pageTitle: "Edit Profile",
-        });
+        // res.render("editProfile", {
+        //     pageTitle: "Edit Profile",
+        // });
+        res.redirect(routes.editProfile);
     }
 };
-export const changePassword = (req, res) => {
+export const getChangePassword = (req, res) => {
     res.render("changePassword", {
         pageTitle: "Change Password",
     });
+};
+
+export const postChangePassword = async (req, res) => {
+    const {
+        body: { oldPassword, newPassword, newPassword1 }
+    } = req;
+
+    try {
+        if (newPassword !== newPassword1) {
+            console.log("wrong type new password.");
+            res.status(400);
+            res.redirect(`/users${routes.changePassword}`);
+            return;
+        }
+        // await User.changePassword(oldPassword, newPassword);
+        const user = await User.findById({ _id: req.user._id });
+        console.log("ddddsuccess");
+        await user.changePassword(oldPassword, newPassword);
+
+        res.redirect(routes.me);
+    } catch (error) {
+        console.log("fail to change password. " + error);
+        res.status(400);
+        res.redirect(`/users${routes.changePassword}`);
+    }
 };
 export const userDetail = async (req, res) => {
     let {
