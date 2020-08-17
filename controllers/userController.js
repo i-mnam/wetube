@@ -214,7 +214,7 @@ export const userDetail = async (req, res) => {
     //console.log("test.." + Mongoose.Schema.ObjectId(id));
 
     try {
-        const user = await User.findOne({ _id: id });
+        const user = await User.findOne({ _id: id }).populate("videos");
 
         res.render("userDetail", {
             pageTitle: "User Detail (not me-version.)",
@@ -234,15 +234,17 @@ export const getMe = async (req, res) => {
         //최고의 난위도 이슈.. How do you turn a Mongoose document into a plain object?
         // mongoose doc은 변경이 불가하였던 애였다..
         // object vs string
-        let user = await (await User.findById({ _id: req.user._id })).toObject();
+        //let user = await (await User.findById({ _id: req.user._id })).toObject();
 
-        if (typeof (user._id) === "object") {
-            console.log("[getMe][result DB]: " + user._id + "//" + typeof (user._id));
-            user._id = user._id.toString();
-            console.log("[getMe][result DB][change]: " + typeof (user._id));
-        }
+        // if (typeof (user._id) === "object") {
+        //     console.log("[getMe][result DB]: " + user._id + "//" + typeof (user._id));
+        //     user._id = user._id.toString();
+        //     console.log("[getMe][result DB][change]: " + typeof (user._id));
+        // }
 
-        console.log("avatar url:" + user.avatarUrl);
+        //const user = await User.findById({ _id: req.user._id });
+        const user = await User.findById({ _id: req.user._id }).populate("videos");
+        // console.log("avatar url:" + user.avatarUrl);
         res.render("userDetail", {
             pageTitle: "User Detail",
             user: user,

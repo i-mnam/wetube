@@ -155,10 +155,19 @@ export const getEditVideo = async (req, res) => {
 
   try {
     const video = await Video.findById(id);
-    res.render("editVideo", {
-      pageTitle: `Edit ${video.title}`,
-      video,
-    });
+
+    //if (video.creator !== req.user._id) { object vs string
+    if (video.creator != req.user._id) {
+      console.log("not equal user.");
+      //console.log("vid:" + video.creator + "/" + typeof (video.creator));
+      //console.log("vid:" + video.creator.toString() + "/" + typeof (video.creator.toString()));
+      throw Error();
+    } else {
+      res.render("editVideo", {
+        pageTitle: `Edit ${video.title}`,
+        video,
+      });
+    }
   } catch (error) {
     res.redirect(routes.home);
   }
@@ -210,8 +219,17 @@ export const getDeleteVideo = async (req, res) => {
   console.log("[getDeleteVideo] id: " + id);
 
   try {
-    const result = await Video.findOneAndRemove({ _id: id });
-    console.log("[getDeleteVideo] result: " + result);
+    const video = await Video.findById(id);
+
+    if (video.creator != req.user._id) {
+      console.log("not equal user.");
+      //console.log("vid:" + video.creator + "/" + typeof (video.creator));
+      //console.log("vid:" + video.creator.toString() + "/" + typeof (video.creator.toString()));
+      throw Error();
+    } else {
+      const result = await Video.findOneAndRemove({ _id: id });
+      console.log("[getDeleteVideo] result: " + result);
+    }
   } catch (error) {
     console.log("[getDeleteVideo] Error: " + error);
   }

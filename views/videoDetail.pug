@@ -7,7 +7,8 @@ block content
         .video__info
             // <a href="/:id/edit">Edit Video</a>
             // a(href=routes.editVideo(video.id)) Edit Video
-            if video.creator.id === ((loggedUser) ? loggedUser.id : "")
+            // if video.creator.id === ((loggedUser) ? loggedUser.id : "")
+            if video.creator.id == ((loggedUser) ? loggedUser.id : "")
                 a(href=routes.editVideo(video.id)) 
                     button Edit Video
             h5.video__title=video.title
