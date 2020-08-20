@@ -228,6 +228,8 @@ export const getDeleteVideo = async (req, res) => {
       throw Error();
     } else {
       const result = await Video.findOneAndRemove({ _id: id });
+      //  await User.findOneAndDelete({ _id: req.user._id }, { $uns et: { "vidoes": { _id: id } } });
+      // ㅇㅏ예 모든 user데이터를 지웠네.ㅋㅋ update가 맞았나보다.
       console.log("[getDeleteVideo] result: " + result);
     }
   } catch (error) {
