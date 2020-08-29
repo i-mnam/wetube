@@ -27,6 +27,10 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 const FACEBOOK = "/auth/facebook";
 const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 
+// API
+const API = "/api";
+const REGISTER_VIEW = "/:id/view";
+
 // routes
 const routes = {
     home: HOME,
@@ -83,6 +87,9 @@ const routes = {
 
     PORT: 4000,
     DOMAIN: "http://localhost",
+
+    api: API,
+    registerView: REGISTER_VIEW,
 };
 //userDetail: USER_DETAIL, videoDetail: VIDEO_DETAIL,
 // old version
