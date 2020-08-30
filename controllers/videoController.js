@@ -13,7 +13,6 @@ export const home = async (req, res) => {
 
   try {
     const videos = await Video.find({}).sort({ _id: -1 });
-    console.log("it's working??");
     // throw Error("test error");
     res.render("home", {
       pageTitle: "Home",
