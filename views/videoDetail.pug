@@ -38,5 +38,5 @@ block content
                 input(type="text", placeholder="Add a comment")
             ul.video__comments-list#jsCommentList
                 each comment in video.comments.reverse()
-                    li
+                    li(data-creator=comment.creator data-id=comment.id)
                         span #{comment.text }

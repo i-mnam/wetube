@@ -292,3 +292,11 @@ export const postAddComment = async (req, res) => {
     res.end();
   }
 }
+
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { creatorId, commentId }
+  } = req;
+  console.log("******* deleteComment ******videoId: " + id + "//creatorId: " + creatorId + "//commentId: " + commentId);
+}

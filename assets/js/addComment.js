@@ -4,6 +4,32 @@ const addCommentForm = document.getElementById("jsAddComment");
 const commentList = document.getElementById("jsCommentList");
 const commentNumber = document.getElementById("jsCommentNumber");
 
+const commentListArray = commentList.querySelectorAll("li");
+
+
+const deleteComment = async (e) => {
+    const target = e.target;
+    let creatorId = null;
+    let commentId = null;
+    if (target.dataset.creator != null) {
+        creatorId = target.dataset.creator;
+        commentId = target.dataset.id;
+    }
+
+    // console.log("id:" + commentId + "//creator:" + creatorId);
+    const videoId = window.location.href.split("/videos/")[1];
+
+    const response = await axios({
+        url: `/api/${videoId}/comment/`,
+        method: "DELETE",
+        data: {
+            commentId: commentId,
+            creatorId: creatorId,
+        },
+    });
+
+    // console.log("deleteComment res:" + response);
+};
 
 const increaseNumber = () => {
     commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) + 1;
@@ -47,6 +73,7 @@ const handleSubmit = (e) => {
 
 function init() {
     addCommentForm.addEventListener("submit", handleSubmit);
+    commentListArray.forEach(ele => ele.addEventListener("click", deleteComment));
 }
 
 if (addCommentForm) {
