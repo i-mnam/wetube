@@ -8,13 +8,17 @@ const commentListArray = commentList.querySelectorAll("li");
 
 
 const deleteComment = async (e) => {
-    const target = e.target;
+    let target = e.target;
     let creatorId = null;
     let commentId = null;
-    if (target.dataset.creator != null) {
-        creatorId = target.dataset.creator;
-        commentId = target.dataset.id;
+    if (target.dataset.creator == null) {
+        if (e.target.tagName !== "SPAN") {
+            console.log("deleteComment null error:" + e.target);
+        }
+        target = e.target.parentElement;
     }
+    creatorId = target.dataset.creator;
+    commentId = target.dataset.id;
 
     // console.log("id:" + commentId + "//creator:" + creatorId);
     const videoId = window.location.href.split("/videos/")[1];

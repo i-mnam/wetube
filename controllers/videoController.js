@@ -4,6 +4,8 @@ import User from "../models/User";
 import Video from "../models/Video";
 import Comment from "../models/Comment";
 
+import mongoose from "mongoose";
+
 export const home = async (req, res) => {
   // start to looking for videos ///////////////////////////////////
   // js가 videos를 찾기 시작은 하지만 그 결과 값을 받는 것을 확인하고 다음 코드를 진행하는 것은 아니다.
@@ -84,23 +86,18 @@ export const postUpload = async (req, res) => {
     body: { title, description },
     file: { path },
   } = req;
-  console.log(
-    "title ))" + title + " \n description))" + description + " \npath))" + path
-  );
   //temp
   // res.render("upload", {pageTitle: "Upload"});
   const user = await User.findById({ _id: req.user._id });
   // Could you tell me why I need to create a new instance, please.:
   // Because the save method is an instance method. You call it on the instance you want to save, not the User type in general.
 
-
   const newVideo = await Video.create({
     fileUrl: path,
     title,
     description,
-    creator: user._id
+    creator: user._id,
   });
-
 
   user.videos.push(newVideo._id);
   user.save();
@@ -143,7 +140,7 @@ export const videoDetail = async (req, res) => {
     res.render("videoDetail", {
       pageTitle: video.title,
       video,
-    });//http://localhost:4000/users/5f2fd9e754a44a0dbe6ed070
+    }); //http://localhost:4000/users/5f2fd9e754a44a0dbe6ed070
   } catch (error) {
     // console.log(error);
     res.redirect(routes.home);
@@ -228,10 +225,17 @@ export const getDeleteVideo = async (req, res) => {
       //console.log("vid:" + video.creator.toString() + "/" + typeof (video.creator.toString()));
       throw Error();
     } else {
-      const result = await Video.findOneAndRemove({ _id: id });
+      // const result = await Video.findOneAndRemove({ _id: id });
+      const result = await Video.deleteOne({ _id: id });
+      const resultUser = await User.findByIdAndUpdate(
+        { _id: req.user._id },
+        { $pull: { videos: id } }
+      );
+
       //  await User.findOneAndDelete({ _id: req.user._id }, { $uns et: { "vidoes": { _id: id } } });
       // ㅇㅏ예 모든 user데이터를 지웠네.ㅋㅋ update가 맞았나보다.
-      console.log("[getDeleteVideo] result: " + result);
+      //console.log("[getDeleteVideo] result: " + result); // 지워진 대상이 반환 됨.
+      console.log("[getDeleteVideo] resultUser: " + resultUser); // 지워진 대상이지만 몽구스 특징상 이전....형태 및 데이터 상태로 반환하는 것 같다. 영어로 봣는데,, 영어라 보자마자 설명 까먹 ㅠㅠㅠㅠㅠ
     }
   } catch (error) {
     console.log("[getDeleteVideo] Error: " + error);
@@ -242,9 +246,8 @@ export const getDeleteVideo = async (req, res) => {
 // Register Video View
 export const postRegisterView = async (req, res) => {
   const {
-    params: { id }
+    params: { id },
   } = req;
-
 
   try {
     const video = await Video.findById({ _id: id });
@@ -259,13 +262,13 @@ export const postRegisterView = async (req, res) => {
   } finally {
     res.end();
   }
-}
+};
 
 export const postAddComment = async (req, res) => {
   const {
     params: { id },
     body: { comment },
-    user
+    user,
   } = req;
 
   try {
@@ -281,7 +284,13 @@ export const postAddComment = async (req, res) => {
     //   pageTitle: video.title,
     //   video,
     // });
-    console.log("what's going on..?");
+    console.log("[postAddComment]" + newComment.creator);
+    const userFromDb = await User.findByIdAndUpdate(
+      { _id: user._id },
+      { $push: { comments: newComment._id } }
+    );
+
+    console.log("[postAddComment] userFromDb id:" + userFromDb._id);
 
     res.redirect(routes.videoDetail(id));
 
@@ -291,12 +300,51 @@ export const postAddComment = async (req, res) => {
   } finally {
     res.end();
   }
-}
+};
 
 export const deleteComment = async (req, res) => {
   const {
     params: { id },
-    body: { creatorId, commentId }
+    body: { creatorId, commentId },
   } = req;
-  console.log("******* deleteComment ******videoId: " + id + "//creatorId: " + creatorId + "//commentId: " + commentId);
-}
+  console.log(
+    "******* deleteComment ******videoId: " +
+    id +
+    "//creatorId: " +
+    creatorId +
+    "//commentId: " +
+    commentId
+  );
+  //******* deleteComment ******videoId: 5f54b93bf8804816dff2858e//creatorId: 5f54b6e0b25ca515bcaf81c5//commentId: 5f54b942f8804816dff2858f
+  try {
+    if (creatorId != req.user._id) {
+      console.log("[deleteComment] not equal user.");
+      //console.log("vid:" + video.creator + "/" + typeof (video.creator));
+      //console.log("vid:" + video.creator.toString() + "/" + typeof (video.creator.toString()));
+      throw Error();
+    } else {
+      // const result = await Video.findOneAndRemove({ _id: id });
+      const resultComment = await Comment.deleteOne({ _id: commentId });
+      const resultUser = await User.findByIdAndUpdate(
+        { _id: req.user._id },
+        { $pull: { comments: commentId } }
+      );
+      const resultVideo = await Video.findByIdAndUpdate(
+        { _id: id },
+        { $pull: { comments: commentId } }
+      );
+
+      //  await User.findOneAndDelete({ _id: req.user._id }, { $uns et: { "vidoes": { _id: id } } });
+      // ㅇㅏ예 모든 user데이터를 지웠네.ㅋㅋ update가 맞았나보다.
+      //console.log("[getDeleteVideo] result: " + result); // 지워진 대상이 반환 됨.
+      console.log("[deleteComment] resultUser: " + resultUser); // 지워진 대상이지만 몽구스 특징상 이전....형태 및 데이터 상태로 반환하는 것 같다. 영어로 봣는데,, 영어라 보자마자 설명 까먹 ㅠㅠㅠㅠㅠ
+      console.log("[deleteComment] resultVideo" + resultVideo);
+
+      res.redirect(routes.videoDetail(id));
+    }
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};

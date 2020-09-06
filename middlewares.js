@@ -23,12 +23,13 @@ export const localsMiddleware = async (req, res, next) => {
     }
     // res.locals.loggedUser = req.user || null; // 대박.!!!!!!!!!!!!!!!!!!!!!
 
-
     if (user) {
-        if (typeof (user._id) === "object") {
-            console.log("[middlewares][result DB]: " + user._id + "//" + typeof (user._id));
+        if (typeof user._id === "object") {
+            console.log(
+                "[middlewares][result DB]: " + user._id + "//" + typeof user._id
+            );
             user._id = user._id.toString();
-            console.log("[middlewares][result DB][change]: " + typeof (user._id));
+            console.log("[middlewares][result DB][change]: " + typeof user._id);
         }
     }
     res.locals.loggedUser = user;
@@ -37,14 +38,27 @@ export const localsMiddleware = async (req, res, next) => {
     // ));
 
     if (user) {
-        console.log("req id:" + req.user._id + "//logged user id:" + res.locals.loggedUser._id);
-        console.log((req.user._id === res.locals.loggedUser._id));
-        console.log("typeof (req.user._id)" + typeof (req.user._id) + "//" + typeof (res.locals.loggedUser._id));
+        console.log(
+            "req id:" +
+            req.user._id +
+            "//logged user id:" +
+            res.locals.loggedUser._id
+        );
+        console.log(req.user._id === res.locals.loggedUser._id);
+        console.log(
+            "typeof (req.user._id)" +
+            typeof req.user._id +
+            "//" +
+            typeof res.locals.loggedUser._id
+        );
     }
 
-    console.log("[middlewares]??? res.locals.loggedUser: "
-        + ((res.locals.loggedUser) ? res.locals.loggedUser.name
-            : res.locals.loggedUser));
+    console.log(
+        "[middlewares]??? res.locals.loggedUser: " +
+        (res.locals.loggedUser
+            ? res.locals.loggedUser.name
+            : res.locals.loggedUser)
+    );
     // console.log("[middlewares] res.locals.loggedUser: " + (
     //     (res.locals.loggedUser) ? JSON.stringify(res.locals.loggedUser) : res.locals.loggedUser
     // ));

@@ -16,4 +16,6 @@ const CommentSchema = new mongoose.Schema({
 });
 
 const model = mongoose.model("Comment", CommentSchema);
+// to text index required for $text query
+model.createIndexes();
 export default model;
